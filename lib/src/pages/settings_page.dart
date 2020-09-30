@@ -25,6 +25,8 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
 
+    prefs.lastPage = SettingsPage.routeName;
+
     _secondaryColor = prefs.secondaryColor;
     _gender = prefs.gender;
     _name = prefs.username;
