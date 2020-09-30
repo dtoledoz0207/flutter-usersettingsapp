@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:userpreferencesapp/src/share_prefs/user_preferences.dart';
 import 'package:userpreferencesapp/src/widgets/sidemenu_widget.dart';
 
 
@@ -13,31 +13,26 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  bool _secondaryColor = false;
-  int _gender = 1;
-  String _name = 'David';
+  bool _secondaryColor;
+  int _gender;
+  String _name;
 
   TextEditingController _textController;
+
+  final prefs = new UserPreferences();
 
   @override
   void initState() {
     super.initState();
 
-    _loadPrefs();
+    _secondaryColor = prefs.secondaryColor;
+    _gender = prefs.gender;
+    _name = prefs.username;
     _textController = new TextEditingController(text: _name);
   }
 
-  _loadPrefs() async {
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     _gender = prefs.getInt('gender');
-     setState(() {});
-  }
-
-  _setSelectedRadio(int value) async {
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    await prefs.setInt('gender', value);
+  _setSelectedRadio(int value) {
+    prefs.gender = value;
 
     setState(() {
       _gender = value;
@@ -47,7 +42,10 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(
+        title: Text('Settings'),
+        backgroundColor: (prefs.secondaryColor) ? Colors.teal : Colors.blue,
+      ),
       drawer: SideMenuWidget(),
       body: ListView(
         children: <Widget>[
@@ -64,6 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onChanged: (bool value) {
               setState(() {
                 _secondaryColor = value;
+                prefs.secondaryColor = value;
               });
             }
           ),
@@ -92,7 +91,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 labelText: 'Name:',
                 helperText: 'Type your name'
               ),
-              onChanged: (String value) {},
+              onChanged: (String value) {
+                prefs.username = value;
+              },
             ),
           )
 

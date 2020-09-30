@@ -12,17 +12,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User preferences')),
+      appBar: AppBar(
+        title: Text('User preferences'),
+        backgroundColor: (prefs.secondaryColor) ? Colors.teal : Colors.blue,
+      ),
       drawer: SideMenuWidget(),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Secondary color: '),
+            Text('Secondary color: ${prefs.secondaryColor}'),
             Divider(),
             Text('Gender: ${prefs.gender}'),
             Divider(),
-            Text('User name: '),
+            Text('User name: ${prefs.username}'),
             Divider()
           ],
         ),
